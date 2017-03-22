@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AR shooter demo", "Assembly-CSharp.csproj", "{9EAFD896-4B7E-795C-A01B-E460C854462E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AR shooter demo", "Assembly-CSharp-Editor.csproj", "{BF377064-3134-B49B-64DD-45EACD18EB42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AR shooter demo", "Assembly-UnityScript-Editor-firstpass.unityproj", "{2A920FFF-4FA1-F966-6FC3-8E3FBBB8383E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9EAFD896-4B7E-795C-A01B-E460C854462E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EAFD896-4B7E-795C-A01B-E460C854462E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EAFD896-4B7E-795C-A01B-E460C854462E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EAFD896-4B7E-795C-A01B-E460C854462E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF377064-3134-B49B-64DD-45EACD18EB42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF377064-3134-B49B-64DD-45EACD18EB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF377064-3134-B49B-64DD-45EACD18EB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF377064-3134-B49B-64DD-45EACD18EB42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A920FFF-4FA1-F966-6FC3-8E3FBBB8383E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A920FFF-4FA1-F966-6FC3-8E3FBBB8383E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A920FFF-4FA1-F966-6FC3-8E3FBBB8383E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A920FFF-4FA1-F966-6FC3-8E3FBBB8383E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
