@@ -1,4 +1,14 @@
-﻿using System.Collections;
+﻿/**
+ * ATTACHED TO: ARCamera
+ * 
+ * TASKS OF THIS SCRIPT:
+ * 1) to shoot. (instantiate bullet; notify canvas that bullet has been fired)
+ * 
+ * TO DO:
+ * 1) [] recoil, if possible.
+**/
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
