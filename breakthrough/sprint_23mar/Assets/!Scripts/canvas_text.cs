@@ -18,7 +18,7 @@ using UnityEngine.UI;
 public class canvas_text : MonoBehaviour {
 
 	public Text text;
-
+	public float health;
 	[HideInInspector]
 	public int bullet_number = 0;
 	[HideInInspector]
@@ -27,16 +27,17 @@ public class canvas_text : MonoBehaviour {
 	void Awake () {
 		bullet_number = 0;
 		enemies_killed = 0;
+		health = GameObject.FindGameObjectWithTag ("imgtgt").GetComponent<gameController> ().health;
 	}
 
 	// Use this for initialization
 	void Start () {
 		text = gameObject.GetComponent<Text> ();
+		update_canvas ("health");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
 	}
 
 	public void update_canvas (string a){
@@ -44,7 +45,9 @@ public class canvas_text : MonoBehaviour {
 			bullet_number += 1;
 		else if (a == "enemy")
 			enemies_killed += 1;
-		text.text = "Bullets Fired: " + bullet_number.ToString () + "\nEnemies Killed: " + enemies_killed.ToString ();//+ "\n<size=7>DEBUGGING: " + (Application.platform != RuntimePlatform.Android) + "</size>";
+		else if (a=="health")
+			health = GameObject.FindGameObjectWithTag ("imgtgt").GetComponent<gameController> ().health;
+		text.text = "Bullets Fired: " + bullet_number.ToString () + "\nEnemies Killed: " + enemies_killed.ToString () + "\nHealth: " + health.ToString();//+ "\n<size=7>DEBUGGING: " + (Application.platform != RuntimePlatform.Android) + "</size>";
 	}
 
 }

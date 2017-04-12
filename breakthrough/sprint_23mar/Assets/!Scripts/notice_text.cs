@@ -21,11 +21,17 @@ public class notice_text : MonoBehaviour {
 
 	public Text text;
 	public float wait_notice = 2.0f;
+	public GameObject hurt;
+	public bool damaged;
+	public Color flashColor = new Color(1f, 0f, 0f, 0.1f);
 
 	// Use this for initialization
 	void Start () {
 		text = gameObject.GetComponent<Text> ();
+		hurt = GameObject.FindGameObjectWithTag ("hurt");
 		text.text = "";
+		damaged = false;
+		hurt.GetComponent<Image> ().color = Color.clear;
 	}
 	
 	// Update is called once per frame
@@ -33,11 +39,21 @@ public class notice_text : MonoBehaviour {
 		if (text.text != "") {
 			StartCoroutine (timer (wait_notice));
 		}
+		if (damaged) {
+			hurt.GetComponent<Image> ().color = flashColor;
+		} else {
+			hurt.GetComponent<Image> ().color = Color.Lerp (hurt.GetComponent<Image> ().color, Color.clear, 5.0f * Time.deltaTime);
+		}
+//		text.text += "<color=red>You have been shot</color>";
+		damaged = false;
 	}
 
 	public void update_notice (string a) {
 		if (a == "enemy")
-			text.text += "<color=red>Enemy Down!</color>";
+			text.text += "<color=green>Enemy Down!</color>";
+		else if (a == "shot") {
+			damaged = true;
+		}
 		else //for debugging other scripts
 			text.text += a;
 	}

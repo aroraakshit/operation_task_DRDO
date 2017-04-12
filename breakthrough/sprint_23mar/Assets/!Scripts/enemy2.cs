@@ -45,7 +45,6 @@ public class enemy2 : MonoBehaviour{
 	public float wait1;
 	private Quaternion targetRotation;
 	private Transform deviation;
-
 	// Use this for initialization
 	void Start () {
 		wait = 0.0f;
@@ -89,6 +88,8 @@ public class enemy2 : MonoBehaviour{
 			status = 2;
 		}
 
+
+
 		switch (status) { //enemy's movement routines under various status situations
 		case 0:
 			{
@@ -116,16 +117,11 @@ public class enemy2 : MonoBehaviour{
 			}
 		case 3:
 			{
-				//Debug.Log ("I am in case three");
-				if (canSeePlayer ()) {
-					//Debug.Log ("shoot the enemy");
-					status = 3;
-				} else {
-					//Debug.Log ("CANNOT shoot the enemy");
-					changeStatus(); 
+				//code for shoot!
+				plan.GetComponent<gameController> ().decreaseHealth ();
+				if (!canSeePlayer ()) {
+					changeStatus ();
 				}
-				//code for shoot and stop
-				//code for hit
 				break;
 			}
 		default:
@@ -175,7 +171,7 @@ public class enemy2 : MonoBehaviour{
 		if (collision.collider.name == "bullet(Clone)") { //if bullet hits the enemy
 			decreaseHealth ("injured");
 		}
-		//Debug.Log ("it's a hit!" + collision.collider.name);
+		Debug.Log ("it's a hit!" + collision.collider.name);
 	}
 
 	void changeStatus () { //to decide the next state of enemy movement; based on r theta model now
@@ -185,7 +181,7 @@ public class enemy2 : MonoBehaviour{
 		if (status == 2 || status == 3) {
 			theta = Mathf.RoundToInt ((rnd_theta * 360) / 30) * 30;
 			r = Mathf.CeilToInt (rnd_r * r_max); //this way magnitude will never be zero
-			Debug.Log ("change status called for: " + gameObject.name + ", r = " + r + ", theta = " + theta);
+			//Debug.Log ("change status called for: " + gameObject.name + ", r = " + r + ", theta = " + theta);
 			translation = r / Time.deltaTime;
 			status = 1;
 			wait1 = wait / Time.deltaTime;
@@ -246,7 +242,7 @@ public class enemy2 : MonoBehaviour{
 		}
 		//Debug.Log (distance + " for " + gameObject.name + " from " + closest.name);
 		if (distance == 0.0f) {
-			Debug.Log ("Enemy to enemy collision! " + gameObject.name + " COLLIDED WITH " + closest.name);
+			//Debug.Log ("Enemy to enemy collision! " + gameObject.name + " COLLIDED WITH " + closest.name);
 			return true;
 		}
 		else
@@ -256,36 +252,44 @@ public class enemy2 : MonoBehaviour{
 	public bool canSeePlayer() {
 		Vector3 rayDirection = GameObject.FindGameObjectWithTag ("bulletspawn").transform.position - transform.position;
 		if (Vector3.Angle (rayDirection, transform.forward) <= allowedAngle && Vector3.Distance(target.transform.position, gameObject.transform.position) <= allowedDistance) {
-			//Debug.Log (gameObject.name + "can see the camera");
-			//transform.LookAt (GameObject.FindGameObjectWithTag ("bulletspawn").transform);
-			return true;
-		}
-		return false;
-	}
-
-	public bool canHitPlayer() { // unable to make this work
-		if (canSeePlayer ()) {
+			//Debug.Log (gameObject.name + "has bullet spawn in the field of view, but it may not be able to see it because camera is behind a wall!");
 			RaycastHit hit;
-			Vector3 rayDirection = (target.position - transform.position);
-			//transform.Rotate (gameObject.transform.up, -Vector3.Angle (rayDirection, transform.forward));
-			//targetRotation = Quaternion.LookRotation (-rayDirection, Vector3.up);
-			//transform.rotation = Quaternion.Slerp (transform.rotation, targetRotation, Time.deltaTime * 0.5f);
-			//Debug.Log ("can hit player");
-			//transform.rotation = Quaternion.RotateTowards (transform.rotation, target.rotation, -1);
-			//transform.rotation.z = ;
-			//transform.LookAt (GameObject.FindGameObjectWithTag ("bulletspawn").transform);
-			if (Physics.Raycast (transform.position, rayDirection, out hit)) {
-				//if (hit.collider.gameObject.name == "bulletSpawn")
-				//	Debug.Log (hit.distance + " FROM " + hit.collider.gameObject.name + " OF " + gameObject.name);
-				if (hit.collider.gameObject.name == "bulletSpawn" && hit.distance <= allowedDistance) {
-					Debug.Log (gameObject.name + " DISTANCE " + hit.distance);
-					//gameObject.transform.rotation.Set (0, transform.rotation.y, 0, transform.rotation.w);
+			Vector3 p1 = gameObject.transform.position;
+			//Debug.Log ("before sphere cast");
+			if (Physics.SphereCast (p1,0.94f,rayDirection,out hit,allowedDistance)) {
+				if (hit.collider.gameObject.tag == "bulletspawn") {
+					Debug.Log (gameObject.name + "can hit me");
 					return true;
 				}
 			}
 		}
 		return false;
 	}
+
+	//	public bool canHitPlayer() { // unable to make this work; if I use lookat to detect whether there is a wall between the enemy and me; I am unable to reverse it; used spherecast instead
+//		if (canSeePlayer ()) {
+//			RaycastHit hit;
+//			Vector3 rayDirection = (target.position - transform.position);
+//			//transform.LookAt (GameObject.FindGameObjectWithTag ("bulletspawn").transform);
+//			//transform.Rotate (gameObject.transform.up, -Vector3.Angle (rayDirection, transform.forward));
+//			//targetRotation = Quaternion.LookRotation (-rayDirection, Vector3.up);
+//			//transform.rotation = Quaternion.Slerp (transform.rotation, targetRotation, Time.deltaTime * 0.5f);
+//			//Debug.Log ("can hit player");
+//			//transform.rotation = Quaternion.RotateTowards (transform.rotation, target.rotation, -1);
+//			//transform.rotation.z = ;
+//			//transform.LookAt (GameObject.FindGameObjectWithTag ("bulletspawn").transform);
+//			if (Physics.Raycast (transform.position, rayDirection, out hit)) {
+//				//if (hit.collider.gameObject.name == "bulletSpawn")
+//				//	Debug.Log (hit.distance + " FROM " + hit.collider.gameObject.name + " OF " + gameObject.name);
+//				if (hit.collider.gameObject.name == "bulletSpawn" && hit.distance <= allowedDistance) {
+//					Debug.Log (gameObject.name + " DISTANCE " + hit.distance);
+//					//gameObject.transform.rotation.Set (0, transform.rotation.y, 0, transform.rotation.w);
+//					return true;
+//				}
+//			}
+//		}
+//		return false;
+//	}
 
 	//in r theta model we do not need to call changeStatus after some interval. We simply need to call it when enemy stops.
 	//	IEnumerator fsm (int samplingRate) { //To decide the next enemy move after a fixed amount of "samplingRate" seconds

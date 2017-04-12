@@ -25,6 +25,8 @@ public class gameController : MonoBehaviour {//, ITrackableEventHandler{
 	public int subject, enemiesDown, bullets_fired;
 	public float Acc_X, Acc_Y, Acc_Z;
 	public DateTime log;
+	public float health;
+	public int bullet_hits;
 
 //	List<int> iList = new List<int>();
 //	public GameObject[] locations;
@@ -39,6 +41,8 @@ public class gameController : MonoBehaviour {//, ITrackableEventHandler{
 		Acc_X = 0.0f;
 		Acc_Y = 0.0f;
 		Acc_Z = 0.0f;
+		health = 100.0f;
+		bullet_hits = 0;
 		StartCoroutine ("reportData");
 
 //		locations = GameObject.FindGameObjectsWithTag ("enemyspawn");
@@ -78,7 +82,7 @@ public class gameController : MonoBehaviour {//, ITrackableEventHandler{
 			Acc_Z = Input.acceleration.z;
 			enemiesDown = GameObject.FindGameObjectWithTag ("canvas_text").GetComponent<canvas_text> ().enemies_killed;
 			bullets_fired = GameObject.FindGameObjectWithTag ("canvas_text").GetComponent<canvas_text> ().bullet_number;
-			string text = subject + " , " + log + " , " + enemiesDown + " , " + bullets_fired + " , " + Acc_X + " , " + Acc_Y + " , " + Acc_Z + "\n";
+			string text = subject + " , " + log + " , " + enemiesDown + " , " + bullets_fired + " , " + Acc_X + " , " + Acc_Y + " , " + Acc_Z + " , " + bullets_fired + " , " + health + "\n";
 			if (Application.platform != RuntimePlatform.Android) {
 				using (System.IO.StreamWriter file = new System.IO.StreamWriter (@"C:\Users\akshi\Desktop\logs.txt", true)) { //we can make the path generic to Application.persistentDataPath + "\logs.txt"
 					file.WriteLine (text);
@@ -98,6 +102,13 @@ public class gameController : MonoBehaviour {//, ITrackableEventHandler{
 			}
 			yield return new WaitForSeconds (0.5f);
 		}
+	}
+
+	public void decreaseHealth (){
+		bullet_hits += 1;
+		health -= 0.1f;
+		GameObject.FindGameObjectWithTag ("canvas_text").GetComponent<canvas_text> ().update_canvas ("health");
+		GameObject.FindGameObjectWithTag ("notice").GetComponent<notice_text> ().update_notice ("shot");
 	}
 
 //	public int newLocation () { //to decide new location of the spawned enemy
