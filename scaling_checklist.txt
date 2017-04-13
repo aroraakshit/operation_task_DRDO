@@ -1,0 +1,13 @@
+pelase take care of the following things while scaling up the project
+
+* change the boundaries when the bullet disappears
+
+* it is better to change the size of image target while playing with virtual world size w.r.t real world size. that way virtual world's values wont need a change
+
+* enemiy boundary collision
+
+* player to player collisions
+
+* allowedDistance and allowedAngle
+
+* spawn enemy positions
