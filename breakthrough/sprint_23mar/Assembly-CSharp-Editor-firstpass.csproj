@@ -55,9 +55,9 @@
      <None Include="Assets\readme_SDK.txt" />
      <None Include="Assets\logs.txt" />
      <None Include="Assets\Vuforia\Shaders\VideoBackground.shader" />
+     <None Include="Assets\StreamingAssets\QCAR\sprint_mar23.xml" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
      <None Include="Assets\license_3rdpartynotice.txt" />
-     <None Include="Assets\StreamingAssets\QCAR\sprint_mar23.xml" />
      <None Include="Assets\Standard Assets\ParticleSystems\ParticleSystemsGuidelines.txt" />
      <None Include="Assets\Vuforia\Editor\WebcamProfiles\profiles.xml" />
      <None Include="Assets\Vuforia\Shaders\DepthMask.shader" />

@@ -23,10 +23,12 @@ public class canvas_text : MonoBehaviour {
 	public int bullet_number = 0;
 	[HideInInspector]
 	public int enemies_killed = 0;
+	public string enemyDistance;
 
 	void Awake () {
 		bullet_number = 0;
 		enemies_killed = 0;
+		enemyDistance = "";
 		health = GameObject.FindGameObjectWithTag ("imgtgt").GetComponent<gameController> ().health;
 	}
 
@@ -38,6 +40,7 @@ public class canvas_text : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		update_canvas ("enemydistance");
 	}
 
 	public void update_canvas (string a){
@@ -45,9 +48,26 @@ public class canvas_text : MonoBehaviour {
 			bullet_number += 1;
 		else if (a == "enemy")
 			enemies_killed += 1;
-		else if (a=="health")
+		else if (a == "health")
 			health = GameObject.FindGameObjectWithTag ("imgtgt").GetComponent<gameController> ().health;
-		text.text = "Bullets Fired: " + bullet_number.ToString () + "\nEnemies Killed: " + enemies_killed.ToString () + "\nHealth: " + health.ToString();//+ "\n<size=7>DEBUGGING: " + (Application.platform != RuntimePlatform.Android) + "</size>";
+		else if (a == "enemydistance")
+			enemyDistance = EnemyCollisionDetection ();
+
+		text.text = "Bullets Fired: " + bullet_number.ToString () + "\nEnemies Killed: " + enemies_killed.ToString () + "\nHealth: " + health.ToString() + 
+			"\nDistance: \n" + enemyDistance;//+ "\n<size=7>DEBUGGING: " + (Application.platform != RuntimePlatform.Android) + "</size>";
+	}
+
+	public string EnemyCollisionDetection () {
+		GameObject[] gos;
+		gos = GameObject.FindGameObjectsWithTag ("enemy");
+		string answer;
+		answer = "";
+		Vector3 position = GameObject.FindGameObjectWithTag("bulletspawn").transform.position;
+		foreach (GameObject go in gos) {
+			float curDistance = Vector3.Distance (go.transform.position, position);
+			answer += go.name.ToString () + " : " + curDistance.ToString () + "\n";
+		}
+		return answer;
 	}
 
 }

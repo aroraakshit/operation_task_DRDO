@@ -4,12 +4,13 @@
  * TASKS PERFORMED BY THIS SCRIPT:
  * 1) spawning enemies (redundant, can be shifted to enemy2.cs later depending upon final usage)
  * 2) logging data in files (dont destroy on load) *accelerometer *bullets *enemies killed
+ * 3) enemy to shoot the player. Those screen effects and decrease in my own health
  *
  * TO DO:
- * 1) enemy to shoot the player. Those screen effects and decrease in my own health
+ * NIL
  * 
  * DATA PRINT IN FILE FORMAT (after every 500ms, i.e. sampling rate of accelerometer) (either comma separated or JSON format; write as you play OR in the end).
- * 		=> SubjectID, Timestamp (of device), Bullets fired till now, Enemy Killed, Accelerometer value (in JSON)
+ * 		=> SubjectID, Timestamp (of device), Bullets fired till now, Enemy Killed, X, Y, Z, 
 **/
 
 using System.Collections;
@@ -82,7 +83,7 @@ public class gameController : MonoBehaviour {//, ITrackableEventHandler{
 			Acc_Z = Input.acceleration.z;
 			enemiesDown = GameObject.FindGameObjectWithTag ("canvas_text").GetComponent<canvas_text> ().enemies_killed;
 			bullets_fired = GameObject.FindGameObjectWithTag ("canvas_text").GetComponent<canvas_text> ().bullet_number;
-			string text = subject + " , " + log + " , " + enemiesDown + " , " + bullets_fired + " , " + Acc_X + " , " + Acc_Y + " , " + Acc_Z + " , " + bullets_fired + " , " + health + "\n";
+			string text = subject + " , " + log + " , " + enemiesDown + " , " + bullets_fired + " , " + Acc_X + " , " + Acc_Y + " , " + Acc_Z + " , " + bullet_hits + " , " + health + "\n";
 			if (Application.platform != RuntimePlatform.Android) {
 				using (System.IO.StreamWriter file = new System.IO.StreamWriter (@"C:\Users\akshi\Desktop\logs.txt", true)) { //we can make the path generic to Application.persistentDataPath + "\logs.txt"
 					file.WriteLine (text);

@@ -16,9 +16,11 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour {
 
+	GameObject boundary;
+
 	// Use this for initialization
 	void Start () {
-		
+		boundary = GameObject.FindGameObjectWithTag ("boundary");
 	}
 
 	void OnCollisionEnter (Collision collision){
@@ -27,6 +29,8 @@ public class bullet : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (Mathf.Abs (boundary.transform.position.z - gameObject.transform.position.z) > 100 || Mathf.Abs (boundary.transform.position.x - gameObject.transform.position.x) > 110) {
+			Destroy (gameObject);
+		}
 	}
 }

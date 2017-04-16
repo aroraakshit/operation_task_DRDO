@@ -45,6 +45,7 @@ public class enemy2 : MonoBehaviour{
 	public float wait1;
 	private Quaternion targetRotation;
 	private Transform deviation;
+	private Vector3 loc;
 	// Use this for initialization
 	void Start () {
 		wait = 0.0f;
@@ -55,8 +56,8 @@ public class enemy2 : MonoBehaviour{
 		translation = 10.0f;
 		r_max = 8;
 		theta = 0;
-		allowedAngle = 40;
-		allowedDistance = 10.0f;	//needs tuning with scaled up environment
+		allowedAngle = 60;
+		allowedDistance = 40.0f;	//needs tuning with scaled up environment
 		canvas = GameObject.FindGameObjectWithTag ("canvas_text");
 		notice = GameObject.FindGameObjectWithTag ("notice");
 		plan = GameObject.FindGameObjectWithTag ("imgtgt");
@@ -65,18 +66,20 @@ public class enemy2 : MonoBehaviour{
 		teleport1 = GameObject.FindGameObjectsWithTag ("enemyspawn").GetLength (0);
 		teleport = Random.Range (0, teleport1);
 		//Debug.Log ("Selected location number: " + teleport.ToString());
-		gameObject.transform.position = GameObject.FindGameObjectsWithTag ("enemyspawn") [teleport].transform.position;
-
+		loc = GameObject.FindGameObjectsWithTag ("enemyspawn") [teleport].transform.position;
+		loc.y = 1959.5f;
+		gameObject.transform.position = loc;
 		changeStatus ();
+		//GetComponent<Animation> ().Play (true);
 		//StartCoroutine (fsm (2));
 	}
 
 	// Update is called once per frame
 	void Update () {
-
 		//if boundary is hit OR enemy to enemy collision, the enemy must rotate 180 degrees on y axis.
-		if (Mathf.Abs(boundary.transform.position.z - gameObject.transform.position.z) > 15 || Mathf.Abs(boundary.transform.position.x - gameObject.transform.position.x) > 15 || EnemyCollisionDetection()) {
+		if (Mathf.Abs(boundary.transform.position.z - gameObject.transform.position.z) > 50 || Mathf.Abs(boundary.transform.position.x - gameObject.transform.position.x) > 55 || EnemyCollisionDetection()) {
 			transform.position -= (transform.forward);
+			Debug.Log (gameObject + " is rotating by 180 " + Mathf.Abs(boundary.transform.position.z - gameObject.transform.position.z) + "  " + Mathf.Abs(boundary.transform.position.x - gameObject.transform.position.x) + "   " + EnemyCollisionDetection ());
 			transform.Rotate (0, 180, 0);
 		}
 
@@ -97,6 +100,7 @@ public class enemy2 : MonoBehaviour{
 				transform.Translate(0, 0, Time.deltaTime * speed);
 				//transform.position += (transform.forward * Time.deltaTime * speed); for infinite forward translation, but not valid for r theta model
 				translation--;
+				GetComponent<Animation> ().Play ("Take 001");
 				break;
 			}
 		case 1:
@@ -225,38 +229,30 @@ public class enemy2 : MonoBehaviour{
 	}
 
 	//Find the closest enemy; to solve the problem of enemy to enemy collision
-	bool EnemyCollisionDetection () {
+	public bool EnemyCollisionDetection () {
 		GameObject[] gos;
 		gos = GameObject.FindGameObjectsWithTag ("enemy");
-		GameObject closest = null;
-		float distance = Mathf.Infinity;
 		Vector3 position = gameObject.transform.position;
 		foreach (GameObject go in gos) {
-			if (go.name != gameObject.name){
-				float curDistance = Vector3.Distance (go.transform.position, position);
-				if (curDistance < distance) {
-					closest = go;
-					distance = curDistance;
+			if (!go.Equals(gameObject)){
+				float curDistance = Vector3.Distance (go.transform.position, gameObject.transform.position);
+				if (curDistance < 5.0f) {
+					return true;
 				}
 			}
 		}
-		//Debug.Log (distance + " for " + gameObject.name + " from " + closest.name);
-		if (distance == 0.0f) {
-			//Debug.Log ("Enemy to enemy collision! " + gameObject.name + " COLLIDED WITH " + closest.name);
-			return true;
-		}
-		else
-			return false;
+		return false;
 	}
 
 	public bool canSeePlayer() {
 		Vector3 rayDirection = GameObject.FindGameObjectWithTag ("bulletspawn").transform.position - transform.position;
+		//Debug.Log ("query toh hai" + Vector3.Angle (rayDirection, transform.forward) + " , " + Vector3.Distance(target.transform.position, gameObject.transform.position));
 		if (Vector3.Angle (rayDirection, transform.forward) <= allowedAngle && Vector3.Distance(target.transform.position, gameObject.transform.position) <= allowedDistance) {
 			//Debug.Log (gameObject.name + "has bullet spawn in the field of view, but it may not be able to see it because camera is behind a wall!");
 			RaycastHit hit;
 			Vector3 p1 = gameObject.transform.position;
-			//Debug.Log ("before sphere cast");
-			if (Physics.SphereCast (p1,0.94f,rayDirection,out hit,allowedDistance)) {
+			Debug.Log ("before sphere cast");
+			if (Physics.SphereCast (p1,1.0f,rayDirection,out hit,allowedDistance)) {
 				if (hit.collider.gameObject.tag == "bulletspawn") {
 					Debug.Log (gameObject.name + "can hit me");
 					return true;
