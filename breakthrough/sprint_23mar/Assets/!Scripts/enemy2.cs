@@ -46,7 +46,6 @@ public class enemy2 : MonoBehaviour{
 	private Quaternion targetRotation;
 	private Transform deviation;
 	private Vector3 loc;
-	private GameObject enemy_shot;
 	// Use this for initialization
 	void Start () {
 		wait = 0.0f;
@@ -61,7 +60,6 @@ public class enemy2 : MonoBehaviour{
 		allowedDistance = 40.0f;	//needs tuning with scaled up environment
 		canvas = GameObject.FindGameObjectWithTag ("canvas_text");
 		notice = GameObject.FindGameObjectWithTag ("notice");
-		enemy_shot = GameObject.FindGameObjectWithTag ("enemy_shot");
 		plan = GameObject.FindGameObjectWithTag ("imgtgt");
 		boundary = GameObject.FindGameObjectWithTag ("boundary");
 		target = GameObject.FindGameObjectWithTag ("bulletspawn").transform;
@@ -125,7 +123,6 @@ public class enemy2 : MonoBehaviour{
 			{
 				//code for shoot!
 				plan.GetComponent<gameController> ().decreaseHealth ();
-				enemy_shot.GetComponent<AudioSource> ().Play ();
 				if (!canSeePlayer ()) {
 					changeStatus ();
 				}
@@ -254,10 +251,10 @@ public class enemy2 : MonoBehaviour{
 			//Debug.Log (gameObject.name + "has bullet spawn in the field of view, but it may not be able to see it because camera is behind a wall!");
 			RaycastHit hit;
 			Vector3 p1 = gameObject.transform.position;
-			//Debug.Log ("before sphere cast");
+			Debug.Log ("before sphere cast");
 			if (Physics.SphereCast (p1,1.0f,rayDirection,out hit,allowedDistance)) {
 				if (hit.collider.gameObject.tag == "bulletspawn") {
-					//Debug.Log (gameObject.name + "can hit me");
+					Debug.Log (gameObject.name + "can hit me");
 					return true;
 				}
 			}
